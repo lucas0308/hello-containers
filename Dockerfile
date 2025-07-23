@@ -1,23 +1,20 @@
-# syntax=docker/dockerfile:1
+FROM node:20-alpine
 
-FROM golang:1.24-alpine AS build
+# Install dependencies required to build native modules
+RUN apk add --no-cache python3 make g++ \
+  && ln -sf python3 /usr/bin/python
 
-# Set destination for COPY
+# Set PYTHON environment variable so node-gyp can find Python
+ENV PYTHON=/usr/bin/python
+
 WORKDIR /app
 
-# Download any Go modules
-COPY container_src/go.mod ./
-RUN go mod download
+# Copy package.json and install websocket dependency
+COPY package.json ./
+RUN npm install && npm install websocket
 
-# Copy container source code
-COPY container_src/*.go ./
+# Copy the server code
+COPY container_src/server.js ./
 
-# Build
-RUN CGO_ENABLED=0 GOOS=linux go build -o /server
-
-FROM scratch
-COPY --from=build /server /server
-EXPOSE 8080
-
-# Run
-CMD ["/server"]
+EXPOSE 8000
+CMD ["node", "server.js"]
