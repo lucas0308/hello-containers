@@ -5,7 +5,7 @@ export class MyContainer extends Container {
   // Port the container listens on (matches your server.js)
   defaultPort = 8000;
   // Keep containers alive longer for WebSocket connections
-  sleepAfter = "2m";
+  sleepAfter = "30s";
   
   // Optional lifecycle hooks
   onStart() {
