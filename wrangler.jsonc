@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "signaling-container",
+  "name": "mpc-signaling-container",
   "main": "src/index.ts",
   "compatibility_date": "2025-05-23",
   "compatibility_flags": ["nodejs_compat"],
